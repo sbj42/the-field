@@ -25,6 +25,11 @@ var BODY_EPSILON = 0.00001;
  */
 var LOCAL_OFF = new geom.Offset();
 /**
+ * For each number in the _tileFlags array, we store (1 << FLAGS_POW2) cells,
+ * as bits where a true indicates the presence of a body.
+ */
+var FLAGS_POW2 = 5;
+/**
  * The FieldOFViewMap represents the map over which the field of view will be
  * computed.  It starts out empty.  You can add walls and bodies to it, and then
  * use getFieldOfView() to compute the field of view from a given point.
@@ -33,23 +38,23 @@ var FieldOfViewMap = /** @class */ (function () {
     function FieldOfViewMap(width, height) {
         this._size = new geom.Size();
         this._size.set(width, height);
-        this._tileFlags = new Array(this._size.area).fill(false);
+        this._tileFlags = new Array((this._size.area >> FLAGS_POW2) + 1).fill(0);
     }
     // setup and maintenance
     FieldOfViewMap.prototype.addBody = function (x, y) {
         LOCAL_OFF.set(x, y);
         var index = this._size.index(LOCAL_OFF);
-        this._tileFlags[index] = true;
+        this._tileFlags[index >> FLAGS_POW2] |= 1 << (index & ((1 << FLAGS_POW2) - 1));
     };
     FieldOfViewMap.prototype.removeBody = function (x, y) {
         LOCAL_OFF.set(x, y);
         var index = this._size.index(LOCAL_OFF);
-        this._tileFlags[index] = false;
+        this._tileFlags[index >> FLAGS_POW2] &= ~(1 << (index & ((1 << FLAGS_POW2) - 1)));
     };
     FieldOfViewMap.prototype.getBody = function (x, y) {
         LOCAL_OFF.set(x, y);
         var index = this._size.index(LOCAL_OFF);
-        return this._tileFlags[index];
+        return (this._tileFlags[index >> FLAGS_POW2] & (1 << (index & ((1 << FLAGS_POW2) - 1)))) !== 0;
     };
     // execution
     /**
@@ -130,7 +135,9 @@ var FieldOfViewMap = /** @class */ (function () {
                 // const/let must be at the top of a block, in order not to trigger deoptimization due to
                 // https://github.com/nodejs/node/issues/9729
                 {
-                    var body = (dx !== 0 || dy !== 0) && this._tileFlags[mapIndex];
+                    var body = (dx !== 0 || dy !== 0)
+                        && (this._tileFlags[mapIndex >> FLAGS_POW2]
+                            & (1 << (mapIndex & ((1 << FLAGS_POW2) - 1)))) !== 0;
                     if (body) {
                         wedgeIndex = cutWedge(wedges, wedgeIndex, slopeY + BODY_EPSILON, slopeX - BODY_EPSILON);
                     }
