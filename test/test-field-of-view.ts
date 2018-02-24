@@ -3,6 +3,37 @@ import * as assert from 'assert';
 import {FieldOfViewMap} from '../src/field-of-view';
 
 describe('carto/field-of-view', () => {
+    it('body manipulation works', () => {
+        const fovMap = new FieldOfViewMap(7, 7);
+        assert.equal(false, fovMap.getBody(0, 0));
+        assert.equal(false, fovMap.getBody(1, 0));
+        assert.equal(false, fovMap.getBody(0, 1));
+        assert.equal(false, fovMap.getBody(1, 1));
+        fovMap.addBody(0, 0);
+        fovMap.addBody(0, 1);
+        assert.equal(true, fovMap.getBody(0, 0));
+        assert.equal(false, fovMap.getBody(1, 0));
+        assert.equal(true, fovMap.getBody(0, 1));
+        assert.equal(false, fovMap.getBody(1, 1));
+        assert.equal(false, fovMap.getBody(5, 5));
+        assert.equal(false, fovMap.getBody(6, 6));
+        fovMap.addBody(1, 0);
+        fovMap.addBody(1, 1);
+        fovMap.removeBody(0, 0);
+        fovMap.removeBody(0, 1);
+        fovMap.addBody(5, 5);
+        fovMap.addBody(6, 6);
+        assert.equal(false, fovMap.getBody(0, 0));
+        assert.equal(true, fovMap.getBody(1, 0));
+        assert.equal(false, fovMap.getBody(0, 1));
+        assert.equal(true, fovMap.getBody(1, 1));
+        assert.equal(true, fovMap.getBody(5, 5));
+        assert.equal(true, fovMap.getBody(6, 6));
+        fovMap.removeBody(5, 5);
+        fovMap.removeBody(6, 6);
+        assert.equal(false, fovMap.getBody(5, 5));
+        assert.equal(false, fovMap.getBody(6, 6));
+    });
     it('works in middle of empty field', () => {
         const fovMap = new FieldOfViewMap(7, 7);
         const fov = fovMap.getFieldOfView(3, 3, 2);

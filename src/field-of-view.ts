@@ -28,17 +28,23 @@ const BODY_EPSILON = 0.00001;
 const LOCAL_OFF = new geom.Offset();
 
 /**
+ * For each number in the _tileFlags array, we store (1 << FLAGS_POW2) cells,
+ * as bits where a true indicates the presence of a body.
+ */
+const FLAGS_POW2 = 5;
+
+/**
  * The FieldOFViewMap represents the map over which the field of view will be
  * computed.  It starts out empty.  You can add walls and bodies to it, and then
  * use getFieldOfView() to compute the field of view from a given point.
  */
 export class FieldOfViewMap {
     private readonly _size = new geom.Size();
-    private readonly _tileFlags: boolean[];
+    private readonly _tileFlags: number[];
 
     constructor(width: number, height: number) {
         this._size.set(width, height);
-        this._tileFlags = new Array<boolean>(this._size.area).fill(false);
+        this._tileFlags = new Array<number>((this._size.area >> FLAGS_POW2) + 1).fill(0);
     }
 
     // setup and maintenance
@@ -46,19 +52,19 @@ export class FieldOfViewMap {
     addBody(x: number, y: number) {
         LOCAL_OFF.set(x, y);
         const index = this._size.index(LOCAL_OFF);
-        this._tileFlags[index] = true;
+        this._tileFlags[index >> FLAGS_POW2] |= 1 << (index & ((1 << FLAGS_POW2) - 1));
     }
 
     removeBody(x: number, y: number) {
         LOCAL_OFF.set(x, y);
         const index = this._size.index(LOCAL_OFF);
-        this._tileFlags[index] = false;
+        this._tileFlags[index >> FLAGS_POW2] &= ~(1 << (index & ((1 << FLAGS_POW2) - 1)));
     }
 
     getBody(x: number, y: number) {
         LOCAL_OFF.set(x, y);
         const index = this._size.index(LOCAL_OFF);
-        return this._tileFlags[index];
+        return (this._tileFlags[index >> FLAGS_POW2] & (1 << (index & ((1 << FLAGS_POW2) - 1)))) !== 0;
     }
 
     // execution
@@ -159,7 +165,9 @@ export class FieldOfViewMap {
                 // const/let must be at the top of a block, in order not to trigger deoptimization due to
                 // https://github.com/nodejs/node/issues/9729
                 {
-                    const body = (dx !== 0 || dy !== 0) && this._tileFlags[mapIndex];
+                    const body = (dx !== 0 || dy !== 0)
+                        && (this._tileFlags[mapIndex >> FLAGS_POW2]
+                            & (1 << (mapIndex & ((1 << FLAGS_POW2) - 1)))) !== 0;
                     if (body) {
                         wedgeIndex = cutWedge(wedges, wedgeIndex,
                             slopeY + BODY_EPSILON, slopeX - BODY_EPSILON);
