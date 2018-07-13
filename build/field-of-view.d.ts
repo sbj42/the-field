@@ -21,5 +21,5 @@ export declare class FieldOfViewMap {
      * maskRect.get(x, y) will return true for visible tiles.
      */
     getFieldOfView(x: number, y: number, chebyshevRadius: number): geom.MaskRect;
-    private _quadrant(mask, origin, chebyshevRadius, xDir, yDir);
+    private _quadrant;
 }
