@@ -1,5 +1,9 @@
 # TheField
 
+[![Dependencies](https://david-dm.org/sbj42/the-field.svg)](https://david-dm.org/sbj42/the-field)
+[![CircleCI](https://img.shields.io/circleci/project/github/sbj42/the-field.svg)](https://circleci.com/gh/sbj42/the-field)
+[![License](https://img.shields.io/github/license/sbj42/the-field.svg)](https://github.com/sbj42/the-field)
+
 #### Basic shadow-casting field-of-view algorithm
 
 [See the demo](https://sbj42.github.io/projects/the-field-demo/www/), and check out other variations of this algorithm: [WallyFOV](https://github.com/sbj42/wally-fov) add support for walls, and [WarpField](https://github.com/sbj42/warp-field) supports portals.
