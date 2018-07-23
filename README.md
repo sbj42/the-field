@@ -3,6 +3,7 @@
 [![Dependencies](https://david-dm.org/sbj42/the-field.svg)](https://david-dm.org/sbj42/the-field)
 [![CircleCI](https://img.shields.io/circleci/project/github/sbj42/the-field.svg)](https://circleci.com/gh/sbj42/the-field)
 [![License](https://img.shields.io/github/license/sbj42/the-field.svg)](https://github.com/sbj42/the-field)
+[![Coverage](https://coveralls.io/repos/github/sbj42/the-field/badge.svg?branch=master)](https://coveralls.io/github/sbj42/the-field?branch=master)
 
 #### Basic shadow-casting field-of-view algorithm
 
