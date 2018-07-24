@@ -2,7 +2,7 @@ import * as assert from 'assert';
 
 import {FieldOfViewMap} from '../src/field-of-view';
 
-describe('carto/field-of-view', () => {
+describe('field-of-view', () => {
     it('body manipulation works', () => {
         const fovMap = new FieldOfViewMap(7, 7);
         assert.equal(false, fovMap.getBody(0, 0));
