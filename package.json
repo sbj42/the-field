@@ -1,6 +1,6 @@
 {
   "name": "the-field",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Basic shadow-casting field-of-view algorithm",
   "keywords": [
     "fov",
