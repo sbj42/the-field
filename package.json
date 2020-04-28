@@ -29,6 +29,7 @@
     "benchmark": "^2.1.4",
     "eslint": "^6.8.0",
     "jest": "^25.4.0",
+    "rimraf": "^3.0.2",
     "seedrandom": "^3.0.5",
     "ts-jest": "^25.4.0",
     "ts-loader": "^7.0.1",
