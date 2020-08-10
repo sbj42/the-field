@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Offset = void 0;
 var Offset = /** @class */ (function () {
     function Offset(x, y) {
         if (typeof x === 'undefined') {
