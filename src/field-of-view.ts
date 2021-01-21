@@ -1,6 +1,6 @@
-import * as geom from './geom';
+import * as geom from 'tiled-geometry';
 
-// tslint:disable:no-bitwise
+/* eslint-disable indent */
 
 /**
  * In the shadowcasting algorithm, each shadow is represented by a "wedge",
@@ -20,12 +20,6 @@ const WEDGE_COUNT = 2;
  * amount of reduction on either side of the wedge.
  */
 const BODY_EPSILON = 0.00001;
-
-/**
- * We avoid heap allocations during the core part of the algorithm by using this
- * preallocated offset object.
- */
-const LOCAL_OFF = new geom.Offset();
 
 /**
  * For each number in the _tileFlags array, we store (1 << FLAGS_POW2) cells,
@@ -49,21 +43,20 @@ export class FieldOfViewMap {
 
     // setup and maintenance
 
-    addBody(x: number, y: number) {
-        LOCAL_OFF.set(x, y);
-        const index = this._size.index(LOCAL_OFF);
+    addBody(x: number, y: number): this {
+        const index = this._size.index(x, y);
         this._tileFlags[index >> FLAGS_POW2] |= 1 << (index & ((1 << FLAGS_POW2) - 1));
+        return this;
     }
 
-    removeBody(x: number, y: number) {
-        LOCAL_OFF.set(x, y);
-        const index = this._size.index(LOCAL_OFF);
+    removeBody(x: number, y: number): this {
+        const index = this._size.index(x, y);
         this._tileFlags[index >> FLAGS_POW2] &= ~(1 << (index & ((1 << FLAGS_POW2) - 1)));
+        return this;
     }
 
-    getBody(x: number, y: number) {
-        LOCAL_OFF.set(x, y);
-        const index = this._size.index(LOCAL_OFF);
+    getBody(x: number, y: number): boolean {
+        const index = this._size.index(x, y);
         return (this._tileFlags[index >> FLAGS_POW2] & (1 << (index & ((1 << FLAGS_POW2) - 1)))) !== 0;
     }
 
@@ -78,15 +71,15 @@ export class FieldOfViewMap {
      * This returns a MaskRect, which indicates which tiles are visible.
      * maskRect.get(x, y) will return true for visible tiles.
      */
-    getFieldOfView(x: number, y: number, chebyshevRadius: number): geom.MaskRect {
+    getFieldOfView(x: number, y: number, chebyshevRadius: number): geom.MaskRectangle {
         const origin = new geom.Offset(x, y);
         const boundRect = new geom.Rectangle(
             origin.x - chebyshevRadius, origin.y - chebyshevRadius,
             chebyshevRadius * 2 + 1, chebyshevRadius * 2 + 1,
         );
-        const mask = new geom.MaskRect(boundRect);
+        const mask = new geom.MaskRectangle(boundRect);
         // the player can always see itself
-        mask.set(origin, true);
+        mask.setAtOffset(origin, true);
         // the field is divided into quadrants
         this._quadrant(mask, origin, chebyshevRadius, -1, -1);
         this._quadrant(mask, origin, chebyshevRadius,  1, -1);
@@ -95,7 +88,7 @@ export class FieldOfViewMap {
         return mask;
     }
 
-    private _quadrant(mask: geom.MaskRect, origin: geom.OffsetLike, chebyshevRadius: number,
+    private _quadrant(mask: geom.MaskRectangle, origin: geom.OffsetLike, chebyshevRadius: number,
                       xDir: number, yDir: number) {
         const {x: startX, y: startY} = origin;
         const endDX = (Math.min(Math.max(startX + xDir * (chebyshevRadius + 1),
@@ -106,8 +99,8 @@ export class FieldOfViewMap {
             // the origin is outside of the map
             return;
         }
-        const startMapIndex = this._size.index(origin);
-        const startMaskIndex = mask.index(origin);
+        const startMapIndex = this._size.index(origin.x, origin.y);
+        const startMaskIndex = mask.index(origin.x, origin.y);
         // Initial wedge is from slope zero to slope infinity (i.e. the whole quadrant)
         const wedges = [0, Number.POSITIVE_INFINITY];
         // X += Y must be written as X = X + Y, in order not to trigger deoptimization due to
@@ -160,7 +153,7 @@ export class FieldOfViewMap {
                 }
 
                 // we can see this tile
-                mask.setAt(maskIndex, true);
+                mask.setAtIndex(maskIndex, true);
 
                 // const/let must be at the top of a block, in order not to trigger deoptimization due to
                 // https://github.com/nodejs/node/issues/9729

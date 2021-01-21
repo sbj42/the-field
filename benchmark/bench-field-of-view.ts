@@ -3,10 +3,10 @@ import * as seedrandom from 'seedrandom';
 
 import {FieldOfViewMap} from '../src';
 
-// tslint:disable:no-console
+/* eslint-disable no-console */
 
 const suite = new Benchmark.Suite();
-suite.on('cycle', (event: any) => {
+suite.on('cycle', (event: {target: string}) => {
     console.log(`field-of-view/${event.target}`);
 });
 const width = 31;

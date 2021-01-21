@@ -6,4 +6,4 @@
  */
 
 export {FieldOfViewMap} from './field-of-view';
-export {MaskRect} from './geom';
+export {MaskRectangle} from 'tiled-geometry';

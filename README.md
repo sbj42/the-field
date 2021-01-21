@@ -1,6 +1,6 @@
 # TheField
 
-![Dependencies](https://img.shields.io/badge/dependencies-none-green.svg)
+![Dependencies](https://img.shields.io/badge/dependencies-1-green.svg)
 [![Node.js CI](https://github.com/sbj42/the-field/workflows/Node.js%20CI/badge.svg)](https://github.com/sbj42/the-field/actions?query=workflow%3A%22Node.js+CI%22)
 [![License](https://img.shields.io/github/license/sbj42/the-field.svg)](https://github.com/sbj42/the-field)
 
