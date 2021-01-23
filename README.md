@@ -38,7 +38,7 @@ Compute the field of view:
 const playerX = 2;
 const playerY = 2;
 const visionRadius = 2;
-const fov = fovMap.getFieldOfView(playerX, playerY, visionRadius);
+const fov = TheField.computeFieldOfView(fovMap, playerX, playerY, visionRadius);
 ```
 
 See which tiles are visible:
