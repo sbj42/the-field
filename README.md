@@ -1,6 +1,6 @@
 # TheField
 
-![Dependencies](https://img.shields.io/badge/dependencies-none-green.svg)
+![Dependencies](https://img.shields.io/badge/dependencies-1-green.svg)
 [![Node.js CI](https://github.com/sbj42/the-field/workflows/Node.js%20CI/badge.svg)](https://github.com/sbj42/the-field/actions?query=workflow%3A%22Node.js+CI%22)
 [![License](https://img.shields.io/github/license/sbj42/the-field.svg)](https://github.com/sbj42/the-field)
 
@@ -38,14 +38,23 @@ Compute the field of view:
 const playerX = 2;
 const playerY = 2;
 const visionRadius = 2;
-const fov = fovMap.getFieldOfView(playerX, playerY, visionRadius);
+const fov = TheField.computeFieldOfView(fovMap, playerX, playerY, visionRadius);
 ```
 
 See which tiles are visible:
 ```js
-fov.get(4, 0); // -> true
-fov.get(4, 1); // -> false
+fov.getVisible(4, 0); // -> true
+fov.getVisible(4, 1); // -> false
 ```
+
+## Upgrading to version 2
+
+Some API changes were made for version 2, here's what you need to do to upgrade:
+
+* Instead of calling `fovMap.getFieldOfView(x, y, radius)`, call `TheField.computeFieldOfView(fovMap, x, y, radius)`
+* Instead of calling `fov.get(x, y)`, call `fov.getVisible(x, y)`
+
+If you're using TypeScript, some of the type names have changed.  For instance, the type for the field of view is now `FieldOfView` instead of `MaskRectangle`.
 
 ## Details
 
