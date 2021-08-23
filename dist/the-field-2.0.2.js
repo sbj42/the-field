@@ -1,4 +1,4 @@
-var TheField;TheField =
+var TheField;
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -1950,29 +1950,6 @@ exports.FieldOfViewMap = FieldOfViewMap;
 
 /***/ }),
 
-/***/ "./src/index.ts":
-/*!**********************!*\
-  !*** ./src/index.ts ***!
-  \**********************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-/*
- *  TheField
- *  github.com/sbj42/the-field
- *  James Clark
- *  Licensed under the MIT license.
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.computeFieldOfView = exports.FieldOfViewMap = void 0;
-var field_of_view_map_1 = __webpack_require__(/*! ./field-of-view-map */ "./src/field-of-view-map.ts");
-Object.defineProperty(exports, "FieldOfViewMap", ({ enumerable: true, get: function () { return field_of_view_map_1.FieldOfViewMap; } }));
-var compute_1 = __webpack_require__(/*! ./compute */ "./src/compute.ts");
-Object.defineProperty(exports, "computeFieldOfView", ({ enumerable: true, get: function () { return compute_1.computeFieldOfView; } }));
-
-
-/***/ }),
-
 /***/ "./src/wedge.ts":
 /*!**********************!*\
   !*** ./src/wedge.ts ***!
@@ -2075,8 +2052,9 @@ exports.cutWedges = cutWedges;
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -2093,10 +2071,30 @@ exports.cutWedges = cutWedges;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__("./src/index.ts");
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+var exports = __webpack_exports__;
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+
+/*
+ *  TheField
+ *  github.com/sbj42/the-field
+ *  James Clark
+ *  Licensed under the MIT license.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.computeFieldOfView = exports.FieldOfViewMap = void 0;
+var field_of_view_map_1 = __webpack_require__(/*! ./field-of-view-map */ "./src/field-of-view-map.ts");
+Object.defineProperty(exports, "FieldOfViewMap", ({ enumerable: true, get: function () { return field_of_view_map_1.FieldOfViewMap; } }));
+var compute_1 = __webpack_require__(/*! ./compute */ "./src/compute.ts");
+Object.defineProperty(exports, "computeFieldOfView", ({ enumerable: true, get: function () { return compute_1.computeFieldOfView; } }));
+
+})();
+
+TheField = __webpack_exports__;
 /******/ })()
 ;
-//# sourceMappingURL=the-field-2.0.1.js.map
+//# sourceMappingURL=the-field-2.0.2.js.map
